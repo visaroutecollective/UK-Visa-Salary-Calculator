@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UK Skilled Worker Visa Salary Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .form-section {
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 2px solid #e1e8ff;
+        }
+
+        .form-section h3 {
+            color: #2a5298;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-section h3::before {
+            content: "📊";
+            margin-right: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .calculate-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .results {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 15px;
+            display: none;
+        }
+
+        .results.eligible {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .results.not-eligible {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: white;
+        }
+
+        .results h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .result-card {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .result-card h4 {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .result-card .value {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .info-section {
+            background: #fff;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            border-left: 5px solid #667eea;
+        }
+
+        .info-section h4 {
+            color: #2a5298;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .info-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .info-section li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .info-section li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🇬🇧 UK Skilled Worker Visa</h1>
+            <p>Salary Calculator & Eligibility Checker</p>
+        </div>
+
+        <div class="content">
+            <div class="form-section">
+                <h3>Your Job Details</h3>
+                
+                <div class="form-group">
+                    <label for="annualSalary">Annual Salary (£)</label>
+                    <input type="number" id="annualSalary" placeholder="e.g., 35000" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="jobType">Job Category</label>
+                    <select id="jobType">
+                        <option value="general">General Skilled Job</option>
+                        <option value="shortage">Shortage Occupation</option>
+                        <option value="health">Health & Care Worker</option>
+                        <option value="teacher">Teacher</option>
+                        <option value="phd">PhD Level Job</option>
+                        <option value="new-entrant">New Entrant (Under 26 or Recent Graduate)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="workingHours">Working Hours per Week</label>
+                    <input type="number" id="workingHours" value="37.5" min="1" max="60" step="0.5">
+                </div>
+
+                <button class="calculate-btn" onclick="calculateEligibility()">
+                    Calculate Visa Eligibility
+                </button>
+            </div>
+
+            <div id="results" class="results">
+                <h3 id="eligibilityStatus"></h3>
+                <div class="results-grid">
+                    <div class="result-card">
+                        <h4>Your Salary</h4>
+                        <div class="value" id="yourSalary">£0</div>
+                    </div>
+                    <div class="result-card">
+                        <h4>Minimum Required</h4>
+                        <div class="value" id="minRequired">£0</div>
+                    </div>
+                    <div class="result-card">
+                        <h4>Hourly Rate</h4>
+                        <div class="value" id="hourlyRate">£0/hr</div>
+                    </div>
+                    <div class="result-card">
+                        <h4>Min Hourly Required</h4>
+                        <div class="value" id="minHourlyRequired">£0/hr</div>
+                    </div>
+                </div>
+                <div id="additionalInfo" style="margin-top: 20px;"></div>
+            </div>
+
+            <div class="info-section">
+                <h4>📋 Key Requirements for UK Skilled Worker Visa (2025)</h4>
+                <ul>
+                    <li><strong>General minimum:</strong> £29,000 per year OR the "going rate" for your job (whichever is higher)</li>
+                    <li><strong>Shortage occupations:</strong> £23,200 minimum (20% reduction)</li>
+                    <li><strong>Health & care workers:</strong> £23,200 minimum</li>
+                    <li><strong>Teachers:</strong> £23,200 minimum</li>
+                    <li><strong>PhD level jobs:</strong> £23,200 minimum (20% reduction)</li>
+                    <li><strong>New entrants:</strong> £23,200 minimum (under 26 or recent graduates)</li>
+                    <li><strong>Minimum hourly rate:</strong> £11.25 per hour (for all categories)</li>
+                </ul>
+            </div>
+
+            <div class="info-section">
+                <h4>ℹ️ Important Notes</h4>
+                <ul>
+                    <li>You must have a job offer from a UK employer with a valid sponsor licence</li>
+                    <li>Your job must be at skill level RQF3 or above (equivalent to A-levels)</li>
+                    <li>You must meet the English language requirement (usually IELTS 4.0 in all areas)</li>
+                    <li>Salary thresholds are reviewed annually and may change</li>
+                    <li>Some allowances and benefits may count towards your salary</li>
+                    <li>Part-time work is allowed if it meets the hourly rate requirements</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateEligibility() {
+            const salary = parseFloat(document.getElementById('annualSalary').value);
+            const jobType = document.getElementById('jobType').value;
+            const workingHours = parseFloat(document.getElementById('workingHours').value);
+
+            if (!salary || salary <= 0) {
+                alert('Please enter a valid salary amount');
+                return;
+            }
+
+            // Salary thresholds for 2025
+            let minSalary;
+            let categoryName;
+            
+            switch (jobType) {
+                case 'general':
+                    minSalary = 29000;
+                    categoryName = 'General Skilled Worker';
+                    break;
+                case 'shortage':
+                    minSalary = 23200;
+                    categoryName = 'Shortage Occupation';
+                    break;
+                case 'health':
+                    minSalary = 23200;
+                    categoryName = 'Health & Care Worker';
+                    break;
+                case 'teacher':
+                    minSalary = 23200;
+                    categoryName = 'Teacher';
+                    break;
+                case 'phd':
+                    minSalary = 23200;
+                    categoryName = 'PhD Level Position';
+                    break;
+                case 'new-entrant':
+                    minSalary = 23200;
+                    categoryName = 'New Entrant';
+                    break;
+                default:
+                    minSalary = 29000;
+                    categoryName = 'General Skilled Worker';
+            }
+
+            // Calculate hourly rates
+            const weeksPerYear = 52;
+            const yourHourlyRate = salary / (workingHours * weeksPerYear);
+            const minHourlyRate = 11.25; // Minimum hourly rate for all categories
+            const minHourlyFromAnnual = minSalary / (workingHours * weeksPerYear);
+            const requiredHourlyRate = Math.max(minHourlyRate, minHourlyFromAnnual);
+
+            // Check eligibility
+            const salaryEligible = salary >= minSalary;
+            const hourlyEligible = yourHourlyRate >= minHourlyRate;
+            const eligible = salaryEligible && hourlyEligible;
+
+            // Display results
+            const results = document.getElementById('results');
+            const status = document.getElementById('eligibilityStatus');
+            const additionalInfo = document.getElementById('additionalInfo');
+
+            if (eligible) {
+                results.className = 'results eligible';
+                status.innerHTML = '✅ You meet the salary requirements!';
+                additionalInfo.innerHTML = `
+                    <p><strong>Category:</strong> ${categoryName}</p>
+                    <p>You exceed both the minimum annual salary and hourly rate requirements for your visa category.</p>
+                `;
+            } else {
+                results.className = 'results not-eligible';
+                status.innerHTML = '❌ You do not meet the salary requirements';
+                
+                let issues = [];
+                if (!salaryEligible) {
+                    issues.push(`Annual salary is £${(minSalary - salary).toLocaleString()} below the minimum`);
+                }
+                if (!hourlyEligible) {
+                    issues.push(`Hourly rate is £${(minHourlyRate - yourHourlyRate).toFixed(2)} below the minimum`);
+                }
+                
+                additionalInfo.innerHTML = `
+                    <p><strong>Category:</strong> ${categoryName}</p>
+                    <p><strong>Issues:</strong></p>
+                    <ul style="list-style: none; padding-left: 0;">
+                        ${issues.map(issue => `<li style="padding: 5px 0;">• ${issue}</li>`).join('')}
+                    </ul>
+                `;
+            }
+
+            // Update result cards
+            document.getElementById('yourSalary').textContent = `£${salary.toLocaleString()}`;
+            document.getElementById('minRequired').textContent = `£${minSalary.toLocaleString()}`;
+            document.getElementById('hourlyRate').textContent = `£${yourHourlyRate.toFixed(2)}/hr`;
+            document.getElementById('minHourlyRequired').textContent = `£${requiredHourlyRate.toFixed(2)}/hr`;
+
+            results.style.display = 'block';
+            results.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Allow Enter key to trigger calculation
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculateEligibility();
+            }
+        });
+    </script>
+</body>
+</html>
