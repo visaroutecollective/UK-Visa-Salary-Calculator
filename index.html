@@ -12,21 +12,31 @@
        Variables & Reset
     ----------------------------------------------- */
     :root {
-      --blue: #2b6cb0;
-      --dark-blue: #2c5282;
-      --red: #e53e3e;
-      --dark-red: #c53030;
-      --grey-light: #f7fafc;
-      --grey-mid: #e2e8f0;
-      --white: #ffffff;
+      /* Dark‐red / Dark‐blue palette */
+      --dark-red: #8B0000;
+      --red-hover: #A80000;
+      --dark-blue: #003366;
+      --blue-hover: #004080;
+
+      /* Neutrals */
+      --grey-light: #F5F5F5;
+      --grey-mid: #E0E0E0;
+      --white: #FFFFFF;
+      --black-alpha: rgba(0, 0, 0, 0.1);
+
+      /* Spacing & Radii */
       --radius-lg: 0.75rem;
       --radius-md: 0.5rem;
       --gap-lg: 2rem;
       --gap-md: 1.25rem;
       --gap-sm: 0.75rem;
-      --shadow-md: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.1);
-      --font-serif: Georgia, "Times New Roman", serif;
+
+      /* Shadow */
+      --shadow-md: 0 0.5rem 1.25rem var(--black-alpha);
+
+      /* Fonts */
       --font-sans: "Helvetica Neue", Arial, sans-serif;
+      --font-serif: Georgia, "Times New Roman", serif;
     }
 
     *,
@@ -42,7 +52,7 @@
     }
 
     body {
-      font-family: var(--font-serif);
+      font-family: var(--font-sans);
       background-color: var(--grey-light);
       color: #333;
       min-height: 100vh;
@@ -73,7 +83,7 @@
     input:focus,
     select:focus,
     button:focus {
-      outline: 3px solid rgba(44, 82, 130, 0.2);
+      outline: 3px solid rgba(0, 51, 102, 0.2);
     }
 
     /* -----------------------------------------------
@@ -89,7 +99,7 @@
     }
 
     header {
-      background-color: var(--blue);
+      background-color: var(--dark-blue);
       color: var(--white);
       padding: var(--gap-lg);
       text-align: center;
@@ -106,7 +116,7 @@
       background: linear-gradient(
         90deg,
         var(--dark-red) 0%,
-        var(--red) 50%,
+        var(--red-hover) 50%,
         var(--dark-red) 100%
       );
     }
@@ -128,7 +138,7 @@
       display: inline-block;
       margin-top: var(--gap-sm);
       padding: 0.5rem 1rem;
-      background-color: var(--red);
+      background-color: var(--dark-red);
       color: var(--white);
       font-weight: 600;
       font-size: 0.875rem;
@@ -190,7 +200,7 @@
       border: 1px solid var(--grey-mid);
       border-radius: var(--radius-md);
       font-size: 1rem;
-      font-family: var(--font-serif);
+      font-family: var(--font-sans);
       background: var(--white);
     }
 
@@ -204,7 +214,7 @@
       display: block;
       width: 100%;
       padding: 1rem;
-      background-color: var(--red);
+      background-color: var(--dark-red);
       color: var(--white);
       border: none;
       border-radius: var(--radius-md);
@@ -216,7 +226,7 @@
     }
 
     .calculate-btn:hover {
-      background-color: var(--dark-red);
+      background-color: var(--red-hover);
       transform: translateY(-2px);
       box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.15);
     }
@@ -234,15 +244,15 @@
     }
 
     #results.eligible {
-      background-color: var(--blue);
+      background-color: var(--dark-blue);
       color: var(--white);
-      border-color: var(--dark-blue);
+      border-color: var(--blue-hover);
     }
 
     #results.not-eligible {
-      background-color: var(--red);
+      background-color: var(--dark-red);
       color: var(--white);
-      border-color: var(--dark-red);
+      border-color: var(--red-hover);
     }
 
     #eligibilityStatus {
@@ -360,6 +370,21 @@
       main {
         padding: var(--gap-md);
       }
+    }
+
+    /* -----------------------------------------------
+       Utility: Visually Hidden (for screen readers)
+    ----------------------------------------------- */
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+      white-space: nowrap;
     }
   </style>
 </head>
@@ -493,31 +518,31 @@
         <ul>
           <li>
             <strong class="highlight-text">General threshold:</strong> £38,700 pa
-            <em>OR</em> the occupation’s going rate (whichever is higher). :contentReference[oaicite:6]{index=6}
+            <em>OR</em> the job’s going rate (whichever is higher).
           </li>
           <li>
             <strong class="highlight-text">Shortage Occupations:</strong>
-            £30,960 pa (80% of general threshold). :contentReference[oaicite:7]{index=7}
+            £30,960 pa (80% of general threshold).
           </li>
           <li>
-            <strong class="highlight-text">Health & Care Worker:</strong>
-            £29,000 pa. :contentReference[oaicite:8]{index=8}
+            <strong class="highlight-text">Health &amp; Care Worker:</strong>
+            £29,000 pa.
           </li>
           <li>
             <strong class="highlight-text">Qualified Teacher:</strong>
-            £30,960 pa (Immigration Salary List). :contentReference[oaicite:9]{index=9}
+            £30,960 pa (Immigration Salary List).
           </li>
           <li>
             <strong class="highlight-text">PhD Level Position:</strong>
-            £34,830 pa (90% of general threshold). :contentReference[oaicite:10]{index=10}
+            £34,830 pa (90% of general threshold).
           </li>
           <li>
             <strong class="highlight-text">New Entrant:</strong>
-            £30,960 pa (80% of £38,700). :contentReference[oaicite:11]{index=11}
+            £30,960 pa (80% of £38,700).
           </li>
           <li>
             <strong class="highlight-text">Universal hourly minimum:</strong>
-            £11.90 /hr (for roles below £25,000 pa floor from Apr 2025). :contentReference[oaicite:12]{index=12}
+            £12.82 /hr (from April 2025).
           </li>
         </ul>
       </section>
@@ -532,20 +557,19 @@
           </li>
           <li>
             <strong>Skill level:</strong> Position must be RQF Level 6 (degree
-            level) or above.  
-            (White Paper proposes raising from RQF 3 to RQF 6 in 2025.) :contentReference[oaicite:13]{index=13}
+            level) or above.
           </li>
           <li>
-            <strong>English proficiency:</strong> IELTS 4.0 in all components
-            or equivalent.  
+            <strong>English proficiency:</strong> IELTS 4.0 in all components or
+            equivalent.
           </li>
           <li>
             <strong>Salary floor (Apr 2025):</strong> £25,000 pa OR £12.82 /hr,
-            whichever is higher. :contentReference[oaicite:14]{index=14}
+            whichever is higher.
           </li>
           <li>
             <strong>Benefit inclusion:</strong> Certain allowances and benefits
-            (e.g., guaranteed bonuses) may count toward salary.
+            (e.g. guaranteed bonuses) may count toward salary.
           </li>
           <li>
             <strong>Part-time eligibility:</strong> Pro-rata arrangements
@@ -598,7 +622,7 @@
           return alert("Please enter valid weekly working hours.");
         }
 
-        // 2025 salary thresholds (verified above)
+        // 2025 salary thresholds (verified)
         let minSalary;
         let categoryName;
         switch (jobType) {
@@ -708,4 +732,5 @@
   </script>
 </body>
 </html>
+
 
